@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Happy Birthday ❤️</title>
+<style>
+body{
+margin:0;
+overflow:hidden;
+background:#111;
+font-family:Arial,sans-serif;
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+/* CONFETTI & BALLOONS */
+.confetti,.balloon{
+position:absolute;
+animation:floatUp 4s linear forwards;
+}
+.confetti{
+width:10px;
+height:10px;
+}
+.balloon{
+width:40px;
+height:55px;
+border-radius:50%;
+}
+
+@keyframes floatUp{
+from{transform:translateY(100vh);}
+to{transform:translateY(-120vh);}
+}
+
+/* MAIN */
+#main{text-align:center;display:none;}
+
+.rainbow span{
+font-size:46px;
+font-weight:bold;
+animation:glow 1.5s infinite alternate;
+}
+
+@keyframes glow{
+from{text-shadow:0 0 5px #fff;}
+to{text-shadow:0 0 15px currentColor;}
+}
+
+/* CANDLE */
+.candle-container{margin-top:40px;}
+.candle{
+width:60px;
+height:200px;
+background:#fff;
+margin:auto;
+border-radius:10px;
+position:relative;
+}
+.flame{
+width:30px;
+height:40px;
+background:orange;
+border-radius:50%;
+position:absolute;
+top:-35px;
+left:15px;
+animation:flicker .2s infinite;
+}
+@keyframes flicker{
+0%{transform:scale(1);}
+100%{transform:scale(1.1);}
+}
+
+.blow-text{font-size:14px;opacity:.8;margin-top:10px;}
+.countdown{font-size:32px;margin-top:10px;}
+
+/* HEARTS */
+.heart{
+position:absolute;
+font-size:24px;
+animation:rise 4s linear forwards;
+}
+@keyframes rise{
+from{transform:translateY(0);opacity:1;}
+to{transform:translateY(-100vh);opacity:0;}
+}
+</style>
+</head>
+
+<body>
+
+<audio id="music" autoplay>
+  <source src="until-i-found-you.mp3" type="audio/mpeg">
+</audio>
+
+<div id="main">
+  <div class="rainbow" id="text"></div>
+
+  <div class="candle-container">
+    <div class="candle">
+      <div class="flame" id="flame"></div>
+    </div>
+    <div class="blow-text">mumları üfle</div>
+    <div class="countdown" id="countdown">10</div>
+  </div>
+</div>
+
+<script>
+// AUTOPLAY FORCE
+const music=document.getElementById("music");
+music.volume=0;
+music.play().then(()=>{
+  let v=0;
+  const fade=setInterval(()=>{
+    v+=0.02;
+    music.volume=v;
+    if(v>=1) clearInterval(fade);
+  },200);
+});
+
+// CONFETTI & BALLOONS
+for(let i=0;i<70;i++){
+let e=document.createElement("div");
+e.className=Math.random()>.5?"confetti":"balloon";
+e.style.left=Math.random()*100+"vw";
+e.style.background=`hsl(${Math.random()*360},100%,50%)`;
+document.body.appendChild(e);
+}
+
+// AFTER 4s CLEAN SCREEN
+setTimeout(()=>{
+document.querySelectorAll(".confetti,.balloon").forEach(e=>e.remove());
+document.getElementById("main").style.display="block";
+},4000);
+
+// RAINBOW TEXT
+const msg="Happy 25th birthday love of my life";
+const colors=["red","orange","yellow","green","cyan","blue","purple","pink"];
+msg.split("").forEach((c,i)=>{
+let s=document.createElement("span");
+s.textContent=c;
+s.style.color=colors[i%colors.length];
+text.appendChild(s);
+});
+
+// COUNTDOWN
+let t=10;
+const cd=document.getElementById("countdown");
+const timer=setInterval(()=>{
+t--;
+cd.textContent=t;
+if(t===0){
+clearInterval(timer);
+document.getElementById("flame").style.display="none";
+hearts();
+}
+},1000);
+
+// HEARTS
+function hearts(){
+for(let i=0;i<40;i++){
+let h=document.createElement("div");
+h.className="heart";
+h.textContent="❤️";
+h.style.left=Math.random()*100+"vw";
+h.style.top="100vh";
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),4000);
+}
+}
+</script>
+
+</body>
+</html>
